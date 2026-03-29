@@ -17,16 +17,34 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; c
   .stat span { color: #e0ddd4; }
   .session-item { background: #242420; border-color: #3a3a36; }
   .session-item:hover { background: #2e2e2a; }
-
   .notice { background: #2e2e2a; color: #aaa; }
-  .sessions h2 { color: #e0ddd4; }
+  .sessions h2, .page-title { color: #e0ddd4; }
   .session-name { color: #e0ddd4; }
   label { color: #aaa; }
   .header p { color: #aaa; }
+  .summary-section { background: #242420; border-color: #3a3a36; }
+  .summary-section h3 { color: #aaa; }
+  .summary-section p, .summary-section li { color: #c0bdb4; }
+  .back-bar { background: #242420; border-color: #3a3a36; }
+  .full-transcript { background: #2e2e2a; border-color: #3a3a36; color: #c0bdb4; }
+  .tag { background: #2e2e2a; color: #888; }
+  .tag.has-summary { background: #085041; color: #9FE1CB; }
 }
 .app { max-width: 680px; margin: 0 auto; }
+.page { display: none; }
+.page.active { display: block; }
+
+button { font-size: 13px; cursor: pointer; border-radius: 8px; padding: 8px 16px; font-family: inherit; font-weight: 500; }
+.btn-primary { background: #4a4a46; color: #ffffff; border: 1px solid #4a4a46; }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-secondary { background: #3a3a36; color: #e0ddd4; border: 1px solid #5a5a56; }
+.btn-secondary:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-danger { background: transparent; color: #d85a30; border: 1px solid #d85a30; }
+.btn-green { background: #1D9E75; color: #fff; border: 1px solid #1D9E75; }
+.btn-green:disabled { opacity: 0.35; cursor: not-allowed; }
+
 .header { margin-bottom: 1.5rem; padding-top: 0.5rem; }
-.header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+.header h1 { font-size: 22px; font-weight: 600; margin-bottom: 2px; }
 .header p { font-size: 13px; color: #666; }
 .card { background: #fff; border: 1px solid #e0ddd4; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
 .row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
@@ -40,17 +58,11 @@ input[type=text]:focus, select:focus { border-color: #888; }
 .dot.paused { background: #ef9f27; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
-button { font-size: 13px; cursor: pointer; border-radius: 8px; padding: 8px 16px; font-family: inherit; font-weight: 500; }
-.btn-primary { background: #4a4a46; color: #ffffff; border: 1px solid #4a4a46; }
-.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
-.btn-secondary { background: #3a3a36; color: #e0ddd4; border: 1px solid #5a5a56; }
-.btn-secondary:disabled { opacity: 0.35; cursor: not-allowed; }
-.btn-danger { background: transparent; color: #d85a30; border: 1px solid #d85a30; }
-.transcript-box { min-height: 220px; max-height: 380px; overflow-y: auto; background: #f5f5f0; border-radius: 8px; padding: 14px; font-size: 14px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; border: 1px solid #e0ddd4; }
-.interim { color: #999; font-style: italic; }
 .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem; }
 .stat { background: #f0ede8; border-radius: 8px; padding: 8px 14px; font-size: 12px; color: #666; }
 .stat span { font-size: 16px; font-weight: 600; color: #1a1a1a; display: block; }
+.transcript-box { min-height: 220px; max-height: 380px; overflow-y: auto; background: #f5f5f0; border-radius: 8px; padding: 14px; font-size: 14px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; border: 1px solid #e0ddd4; }
+.interim { color: #999; font-style: italic; }
 .sessions { margin-top: 1.5rem; }
 .sessions h2 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
 .session-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid #e0ddd4; border-radius: 8px; margin-bottom: 6px; font-size: 13px; background: #fff; flex-wrap: wrap; gap: 8px; }
@@ -59,13 +71,33 @@ button { font-size: 13px; cursor: pointer; border-radius: 8px; padding: 8px 16px
 .session-actions { display: flex; gap: 6px; }
 .empty-state { text-align: center; padding: 2rem; color: #aaa; font-size: 13px; }
 .notice { font-size: 12px; color: #666; background: #f0ede8; padding: 8px 12px; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid #ccc; line-height: 1.5; }
+.tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 20px; background: #f0ede8; color: #888; margin-left: 6px; font-weight: 500; vertical-align: middle; }
+.tag.has-summary { background: #d4f0e6; color: #0F6E56; }
+
+.back-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fff; border: 1px solid #e0ddd4; border-radius: 8px; margin-bottom: 1.5rem; }
+.back-bar button { padding: 6px 12px; font-size: 12px; }
+.page-title { font-size: 16px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.summary-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
+.summary-section { background: #fff; border: 1px solid #e0ddd4; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.summary-section h3 { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.summary-section p { font-size: 14px; line-height: 1.7; }
+.summary-section ul { padding-left: 1.2rem; }
+.summary-section li { font-size: 14px; line-height: 1.8; margin-bottom: 2px; }
+.generating { display: flex; align-items: center; gap: 10px; padding: 1.5rem; font-size: 13px; color: #888; background: #fff; border: 1px solid #e0ddd4; border-radius: 12px; margin-bottom: 1rem; }
+.spinner { width: 16px; height: 16px; border: 2px solid #ddd; border-top-color: #1D9E75; border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.full-transcript { max-height: 280px; overflow-y: auto; background: #f5f5f0; border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; border: 1px solid #e0ddd4; }
+.error-box { background: #fff0ed; border: 1px solid #f0997b; border-radius: 8px; padding: 1rem; font-size: 13px; color: #712B13; line-height: 1.6; margin-bottom: 1rem; }
 </style>
 </head>
 <body>
+
+<!-- PAGE: Home -->
+<div class="page active" id="page-home">
 <div class="app">
   <div class="header">
     <h1>Meeting Transcriber</h1>
-    <p>Runs entirely in your browser. No data leaves your device.</p>
+    <p>No data leaves your device</p>
   </div>
 
   <div class="notice" id="notice">Checking browser support...</div>
@@ -99,7 +131,7 @@ button { font-size: 13px; cursor: pointer; border-radius: 8px; padding: 8px 16px
   <div class="stats">
     <div class="stat"><span id="wordCount">0</span>words</div>
     <div class="stat"><span id="duration">0:00</span>duration</div>
-    <div class="stat"><span id="chunkCount">0</span>chunks saved</div>
+    <div class="stat"><span id="chunkCount">0</span>chunks</div>
   </div>
 
   <div class="controls">
@@ -114,10 +146,36 @@ button { font-size: 13px; cursor: pointer; border-radius: 8px; padding: 8px 16px
     <span style="color:#aaa;font-size:13px;">Transcript will appear here as you speak...</span>
   </div>
 
-  <div class="sessions" id="sessionsPanel">
+  <div class="sessions">
     <h2>Saved sessions</h2>
     <div id="sessionsList"></div>
   </div>
+</div>
+</div>
+
+<!-- PAGE: Summary -->
+<div class="page" id="page-summary">
+<div class="app">
+  <div class="back-bar">
+    <button class="btn-secondary" id="backBtn">← Back</button>
+    <span class="page-title" id="summaryTitle">Summary</span>
+  </div>
+
+  <div class="summary-actions">
+    <button class="btn-green" id="generateBtn">Generate summary</button>
+    <button class="btn-secondary" id="exportSummaryBtn">Export summary</button>
+    <button class="btn-secondary" id="exportTranscriptBtn">Export transcript</button>
+  </div>
+
+  <div id="summaryContent">
+    <div style="padding:1rem;font-size:13px;color:#aaa;">No summary yet — hit Generate summary above.</div>
+  </div>
+
+  <div class="summary-section">
+    <h3>Full transcript</h3>
+    <div class="full-transcript" id="fullTranscriptView"></div>
+  </div>
+</div>
 </div>
 
 <script>
@@ -146,13 +204,26 @@ let chunkCount = 0;
 let isPaused = false;
 let isRecording = false;
 let sessions = [];
+let currentSessionIndex = -1;
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('backBtn').addEventListener('click', () => showPage('home'));
+
+document.getElementById('generateBtn').addEventListener('click', generateSummary);
+document.getElementById('exportSummaryBtn').addEventListener('click', exportSummary);
+document.getElementById('exportTranscriptBtn').addEventListener('click', exportFullSession);
 
 if (!SpeechRecognition) {
-  notice.textContent = 'This browser does not support Speech Recognition. Please use Chrome on Android or Safari on iOS.';
+  notice.textContent = 'Speech Recognition not supported. Use Chrome (Android) or Safari (iOS).';
   notice.style.borderLeftColor = '#d85a30';
   startBtn.disabled = true;
 } else {
-  notice.textContent = 'Ready. Works best on Chrome (Android) or Safari (iOS). Point your phone mic toward the speaker.';
+  notice.textContent = 'Ready. Works best on Chrome (Android) or Safari (iOS). Point mic toward speaker.';
   notice.style.borderLeftColor = '#1D9E75';
 }
 
@@ -170,31 +241,32 @@ function renderSessions() {
   if (!sessions.length) { list.innerHTML = '<div class="empty-state">No saved sessions yet</div>'; return; }
   list.innerHTML = sessions.slice().reverse().map((s, ri) => {
     const i = sessions.length - 1 - ri;
+    const hasSummary = !!s.summary;
     return `<div class="session-item">
-      <div><div class="session-name">${s.name}</div><div class="session-meta">${s.date} · ${s.words} words · ${s.duration}</div></div>
+      <div>
+        <div class="session-name">${s.name}<span class="tag ${hasSummary ? 'has-summary' : ''}">${hasSummary ? 'summarised' : 'transcript'}</span></div>
+        <div class="session-meta">${s.date} · ${s.words} words · ${s.duration}</div>
+      </div>
       <div class="session-actions">
-        <button class="btn-secondary" style="font-size:12px;padding:5px 10px" onclick="viewSession(${i})">View</button>
-        <button class="btn-secondary" style="font-size:12px;padding:5px 10px" onclick="downloadSession(${i})">Export</button>
-        <button style="font-size:12px;padding:5px 10px;background:transparent;border:1px solid #d85a30;color:#d85a30;border-radius:8px;cursor:pointer;font-family:inherit" onclick="deleteSession(${i})">Delete</button>
-      </div></div>`;
+        <button class="btn-secondary" style="font-size:12px;padding:5px 10px" onclick="openSession(${i})">Open</button>
+        <button style="font-size:12px;padding:5px 10px;background:transparent;border:1px solid #d85a30;color:#d85a30;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:500" onclick="deleteSession(${i})">Delete</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function viewSession(i) {
+function openSession(i) {
+  currentSessionIndex = i;
   const s = sessions[i];
-  transcriptBox.innerHTML = '';
-  transcriptBox.textContent = s.transcript;
-  exportBtn.disabled = false;
-  sessionNameEl.value = s.name;
-  fullTranscript = s.transcript;
-}
-
-function downloadSession(i) {
-  const s = sessions[i];
-  const blob = new Blob([`Session: ${s.name}\nDate: ${s.date}\nDuration: ${s.duration}\n\n${s.transcript}`], {type:'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = `${s.name.replace(/\s+/g,'_')}_transcript.txt`; a.click();
-  URL.revokeObjectURL(url);
+  document.getElementById('summaryTitle').textContent = s.name;
+  document.getElementById('fullTranscriptView').textContent = s.transcript;
+  document.getElementById('generateBtn').textContent = s.summary ? 'Regenerate summary' : 'Generate summary';
+  if (s.summary) {
+    renderSummary(s.summary);
+  } else {
+    document.getElementById('summaryContent').innerHTML = '<div style="padding:1rem;font-size:13px;color:#aaa;">No summary yet — hit Generate summary above.</div>';
+  }
+  showPage('summary');
 }
 
 function deleteSession(i) {
@@ -202,8 +274,7 @@ function deleteSession(i) {
   sessions.splice(i, 1); saveSessions(); renderSessions();
 }
 
-window.viewSession = viewSession;
-window.downloadSession = downloadSession;
+window.openSession = openSession;
 window.deleteSession = deleteSession;
 
 function updateStats() {
@@ -253,7 +324,7 @@ function setupRecognition() {
 
   recognition.onerror = (e) => {
     if (e.error === 'no-speech') return;
-    if (e.error === 'not-allowed') { statusText.textContent = 'Microphone access denied — allow mic in browser settings'; statusDot.className = 'dot'; return; }
+    if (e.error === 'not-allowed') { statusText.textContent = 'Mic access denied — allow mic in browser settings'; statusDot.className = 'dot'; return; }
     statusText.textContent = `Error: ${e.error} — restarting...`;
   };
 
@@ -283,7 +354,16 @@ stopBtn.addEventListener('click', () => {
   isRecording = false; isPaused = false; recognition.stop(); clearInterval(timerInterval);
   statusDot.className = 'dot'; statusText.textContent = 'Stopped — session saved';
   const elapsed = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
-  sessions.push({ name: sessionNameEl.value.trim(), date: new Date().toLocaleString(), transcript: fullTranscript, words: fullTranscript.trim().split(/\s+/).filter(Boolean).length, duration: `${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}` });
+  const session = {
+    name: sessionNameEl.value.trim(),
+    date: new Date().toLocaleString(),
+    transcript: fullTranscript,
+    words: fullTranscript.trim().split(/\s+/).filter(Boolean).length,
+    duration: `${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`,
+    summary: null
+  };
+  sessions.push(session);
+  currentSessionIndex = sessions.length - 1;
   saveSessions(); renderSessions();
   startBtn.disabled = false; pauseBtn.disabled = true; stopBtn.disabled = true; discardBtn.disabled = true; exportBtn.disabled = false; langSelect.disabled = false; pauseBtn.textContent = 'Pause';
 });
@@ -299,9 +379,90 @@ discardBtn.addEventListener('click', () => {
 
 exportBtn.addEventListener('click', () => {
   const name = sessionNameEl.value.trim() || 'transcript';
-  const blob = new Blob([`Session: ${name}\nDate: ${new Date().toLocaleString()}\n\n${fullTranscript}`], {type:'text/plain'});
-  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${name.replace(/\s+/g,'_')}.txt`; a.click(); URL.revokeObjectURL(url);
+  downloadText(`Session: ${name}\nDate: ${new Date().toLocaleString()}\n\n${fullTranscript}`, name + '.txt');
 });
+
+async function generateSummary() {
+  const s = sessions[currentSessionIndex];
+  if (!s || !s.transcript.trim()) {
+    document.getElementById('summaryContent').innerHTML = '<div class="error-box">No transcript to summarise yet.</div>';
+    return;
+  }
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true; btn.textContent = 'Generating...';
+  document.getElementById('summaryContent').innerHTML = `<div class="generating"><div class="spinner"></div><span>Analysing your meeting transcript...</span></div>`;
+
+  const prompt = `You are a meeting assistant. Analyse this transcript and return a JSON object with exactly these four keys:
+- "tldr": string, 2-3 sentences summarising the whole meeting
+- "decisions": array of strings, each a key decision made
+- "actions": array of strings, each an action item or next step (include owner if mentioned)
+- "highlights": array of strings, each an important highlight or notable moment
+
+Return ONLY valid JSON. No markdown, no backticks, no explanation.
+
+Transcript:
+${s.transcript}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content || []).map(c => c.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    sessions[currentSessionIndex].summary = parsed;
+    saveSessions(); renderSessions();
+    renderSummary(parsed);
+    btn.textContent = 'Regenerate summary';
+  } catch(err) {
+    document.getElementById('summaryContent').innerHTML = `<div class="error-box">Could not generate summary. Check your internet connection and try again.<br><br><small style="opacity:0.7">${err.message}</small></div>`;
+  }
+  btn.disabled = false;
+}
+
+function renderSummary(s) {
+  if (!s) return;
+  const list = arr => (arr && arr.length)
+    ? `<ul>${arr.map(x => `<li>${x}</li>`).join('')}</ul>`
+    : '<p style="color:#aaa;font-size:13px;">None noted</p>';
+  document.getElementById('summaryContent').innerHTML = `
+    <div class="summary-section"><h3>TL;DR</h3><p>${s.tldr || '—'}</p></div>
+    <div class="summary-section"><h3>Key decisions</h3>${list(s.decisions)}</div>
+    <div class="summary-section"><h3>Action items &amp; next steps</h3>${list(s.actions)}</div>
+    <div class="summary-section"><h3>Important highlights</h3>${list(s.highlights)}</div>`;
+}
+
+function downloadText(text, filename) {
+  const blob = new Blob([text], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportSummary() {
+  const s = sessions[currentSessionIndex];
+  if (!s || !s.summary) { alert('Generate a summary first.'); return; }
+  const sum = s.summary;
+  let text = `MEETING SUMMARY — ${s.name}\nDate: ${s.date} | Duration: ${s.duration} | Words: ${s.words}\n\n`;
+  text += `TL;DR\n${sum.tldr}\n\n`;
+  text += `KEY DECISIONS\n${(sum.decisions||[]).map(d=>'• '+d).join('\n')}\n\n`;
+  text += `ACTION ITEMS\n${(sum.actions||[]).map(a=>'• '+a).join('\n')}\n\n`;
+  text += `HIGHLIGHTS\n${(sum.highlights||[]).map(h=>'• '+h).join('\n')}`;
+  downloadText(text, s.name.replace(/\s+/g,'_') + '_summary.txt');
+}
+
+function exportFullSession() {
+  const s = sessions[currentSessionIndex];
+  if (!s) return;
+  downloadText(`Session: ${s.name}\nDate: ${s.date}\nDuration: ${s.duration}\n\n${s.transcript}`, s.name.replace(/\s+/g,'_') + '_transcript.txt');
+}
 
 loadSessions();
 </script>
