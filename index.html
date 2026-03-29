@@ -102,6 +102,11 @@ input[type=text]:focus, select:focus { border-color: #888; }
 
   <div class="notice" id="notice">Checking browser support...</div>
 
+  <div class="row">
+    <label>API Key</label>
+    <input type="text" id="apiKeyInput" placeholder="Paste Anthropic key once" />
+  </div>
+
   <div class="card">
     <div class="row">
       <label>Session name</label>
@@ -194,6 +199,15 @@ const durationEl = document.getElementById('duration');
 const chunkCountEl = document.getElementById('chunkCount');
 const sessionNameEl = document.getElementById('sessionName');
 const langSelect = document.getElementById('langSelect');
+const apiKeyInput = document.getElementById('apiKeyInput');
+
+// load saved key
+apiKeyInput.value = localStorage.getItem('anthropic_key') || '';
+
+// save on change
+apiKeyInput.addEventListener('change', () => {
+  localStorage.setItem('anthropic_key', apiKeyInput.value.trim());
+});
 
 let recognition = null;
 let fullTranscript = '';
@@ -383,6 +397,12 @@ exportBtn.addEventListener('click', () => {
 });
 
 async function generateSummary() {
+  const key = localStorage.getItem('anthropic_key');
+  if (!key) {
+    document.getElementById('summaryContent').innerHTML =
+      '<div class="error-box">Add your API key on the home screen first.</div>';
+    return;
+  }
   const s = sessions[currentSessionIndex];
   if (!s || !s.transcript.trim()) {
     document.getElementById('summaryContent').innerHTML = '<div class="error-box">No transcript to summarise yet.</div>';
@@ -406,9 +426,13 @@ ${s.transcript}`;
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01'
+      },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-3-haiku-20240307',
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
