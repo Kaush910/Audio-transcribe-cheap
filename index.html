@@ -439,6 +439,7 @@ ${s.transcript}`;
       })
     });
     const data = await res.json();
+    console.log('API response:', JSON.stringify(data));
     const text = (data.content || []).map(c => c.text || '').join('');
     const clean = text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
