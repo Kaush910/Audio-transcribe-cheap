@@ -254,7 +254,7 @@ function renderSessions() {
   const list = document.getElementById('sessionsList');
   if (!sessions.length) { list.innerHTML = '<div class="empty-state">No saved sessions yet</div>'; return; }
   list.innerHTML = sessions.slice().reverse().map((s, ri) => {
-    const i = sessions.length - 1 - ri;
+    const i = sessions.length - 1 - ri; 
     const hasSummary = !!s.summary;
     return `<div class="session-item">
       <div>
@@ -429,7 +429,8 @@ ${s.transcript}`;
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': key,
-        'anthropic-version': '2023-06-01'
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
         model: 'claude-3-haiku-20240307',
